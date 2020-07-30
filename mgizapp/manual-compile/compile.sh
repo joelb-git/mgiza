@@ -1,3 +1,7 @@
+#! /bin/bash
+
+set -e
+
 COMPILE_FLAGS="-O3 -DNDEBUG -DWORDINDEX_WITH_4_BYTE -DBINARY_SEARCH_FOR_TTABLE -MD -MP -MF -MT "
 
 GCC="gcc $COMPILE_FLAGS"
@@ -10,12 +14,12 @@ LDFLAGS="-static"
 #GCC="clang $COMPILE_FLAGS"
 #GPP="clang++ $COMPILE_FLAGS"
 
-SRC_DIR=~/workspace/github/mgiza/mgizapp/src
-BOOST_ROOT=~/workspace/boost/boost_1_55_0
+SRC_DIR=/nas/home/joelb/views/mgiza-joelb/mgizapp/src
+BOOST_ROOT=/nas/home/joelb/boost_build
 BOOST_INCLUDE=$BOOST_ROOT/include
-BOOST_LIBRARYDIR=$BOOST_ROOT/lib64
+BOOST_LIBRARYDIR=$BOOST_ROOT/lib
 
-rm *.o libmgiza.a d4norm hmmnorm mgiza plain2snt snt2cooc snt2coocrmp snt2plain symal mkcls
+rm -f *.o libmgiza.a d4norm hmmnorm mgiza plain2snt snt2cooc snt2coocrmp snt2plain symal mkcls
 
 $GPP -I$SRC_DIR -I$BOOST_INCLUDE -c -fPIC   \
  $SRC_DIR/alignment.cpp \
@@ -72,4 +76,5 @@ $GPP -o symal $SRC_DIR/symal.cpp        $LDFLAGS -I$BOOST_INCLUDE -I$SRC_DIR ./l
 
 $GPP -I$SRC_DIR/mkcls  -o mkcls $SRC_DIR/mkcls/mkcls.cpp $SRC_DIR/mkcls/general.cpp $SRC_DIR/mkcls/KategProblemKBC.cpp $SRC_DIR/mkcls/KategProblem.cpp $SRC_DIR/mkcls/Problem.cpp $SRC_DIR/mkcls/ProblemTest.cpp $SRC_DIR/mkcls/IterOptimization.cpp $SRC_DIR/mkcls/StatVar.cpp $SRC_DIR/mkcls/TAOptimization.cpp $SRC_DIR/mkcls/SAOptimization.cpp $SRC_DIR/mkcls/GDAOptimization.cpp $SRC_DIR/mkcls/MYOptimization.cpp $SRC_DIR/mkcls/RRTOptimization.cpp $SRC_DIR/mkcls/HCOptimization.cpp $SRC_DIR/mkcls/Optimization.cpp $SRC_DIR/mkcls/KategProblemWBC.cpp $SRC_DIR/mkcls/KategProblemTest.cpp
 
-
+mkdir -p bin
+cp mgiza plain2snt snt2cooc mkcls bin
