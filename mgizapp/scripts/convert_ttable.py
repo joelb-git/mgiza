@@ -34,10 +34,14 @@ def main():
     t3_path = find_unique_path(f'{args.ttable_dir}/*.t3.final')
     ttable_name = os.path.basename(t3_path).replace('.t3.final', '')
 
-    # the src/trg conventions here are very confusing, but i believe
-    # this is correct regardless of the confusing names
-    tgt_vocab = read_vocab(find_unique_path(f'{outdir}/*trn.src.vcb'))
-    src_vocab = read_vocab(find_unique_path(f'{outdir}/*trn.trg.vcb'))
+    if 'Forward' in outdir:
+        tgt_vocab = read_vocab(find_unique_path(f'{outdir}/../train.f.vcb'))
+        src_vocab = read_vocab(find_unique_path(f'{outdir}/../train.e.vcb'))
+    elif 'Backward' in outdir:
+        src_vocab = read_vocab(find_unique_path(f'{outdir}/../train.f.vcb'))
+        tgt_vocab = read_vocab(find_unique_path(f'{outdir}/../train.e.vcb'))
+    else:
+        raise ValueError('outdir must contain Forward or Backward')
 
     with open(t3_path) as f:
         for line in f:

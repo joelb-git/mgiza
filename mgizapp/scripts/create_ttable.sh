@@ -21,17 +21,17 @@ fi
 
 source_path=`realpath $1`
 target_path=`realpath $2`
-source_name=${1##*/}
-target_name=${2##*/}
+source_name=train.f
+target_name=train.e
 outdir=$(realpath $3)
 
 mkdir -p ${outdir}
 lower=${SCRIPT_DIR}/lowercase.perl
-$lower <${source_path} >${outdir}/${source_name}
-$lower <${target_path} >${outdir}/${target_name}
+$lower <${source_path} >${outdir}/train.f
+$lower <${target_path} >${outdir}/train.e
 
-source_path=$(realpath ${outdir}/${source_name})
-target_path=$(realpath ${outdir}/${target_name})
+source_path=$(realpath ${outdir}/train.f)
+target_path=$(realpath ${outdir}/train.e)
 
 cd ${outdir}
 
@@ -79,10 +79,10 @@ for name in "Forward" "Backward"; do
     # TODO: counts below - can we configure to get a real prefix to
     # avoid treating as hidden files?
     if [ "$name" == "Forward" ]; then
-	${SCRIPT_DIR}/convert_ttable.py . >e_f.ttable
+	${SCRIPT_DIR}/convert_ttable.py ../$name >e_f.ttable
 	cp .t.count e_f.counts
     else
-	${SCRIPT_DIR}/convert_ttable.py . >f_e.ttable
+	${SCRIPT_DIR}/convert_ttable.py ../$name >f_e.ttable
 	cp .t.count f_e.counts
     fi
     cd ..
